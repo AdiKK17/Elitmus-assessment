@@ -1,3 +1,4 @@
 class Advertisement < ApplicationRecord
-    has_many :comment
+  belongs_to :user
+  has_many :comment
 end

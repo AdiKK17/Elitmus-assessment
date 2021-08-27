@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   namespace :api do
     resources :advertisement
     resources :comment
+    resources :user
+    post "/user/login", to: "user#login"
 
   end
 end
