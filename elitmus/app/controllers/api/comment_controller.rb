@@ -1,5 +1,6 @@
 module Api
     class CommentController < ApplicationController
+        before_action :authorized , only: []
 
         #GET get all comments
         def index
@@ -33,7 +34,7 @@ module Api
 
         # this method is used for allowing only specified sets of attributes
         def comment_params
-            params.permit(:comment,:advertisement_id)
+            params.permit(:comment,:advertisement_id,:user_id)
         end
         
     end
