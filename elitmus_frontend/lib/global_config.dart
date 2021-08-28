@@ -6,7 +6,9 @@ class GlobalConfigs {
   static String? id;
   static String? email;
   static String? token;
-  static const String baseURl = "http://localhost:3000/api";
+  // static const String baseURl = "http://localhost:3000/api";
+  static const String baseURl = "https://elitmus.herokuapp.com/api";
+
 
 
 }

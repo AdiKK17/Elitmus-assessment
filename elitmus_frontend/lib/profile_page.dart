@@ -66,7 +66,7 @@ class _ProfilePageState extends State<ProfilePage> {
             child: ListView.builder(
               itemBuilder: (ctx, i) {
                 int idx = GlobalConfigs.allAdvertisements
-                    .indexWhere((element) => element.userId == GlobalConfigs.id);
+                    .indexWhere((element) => element.userId == GlobalConfigs.id,i);
                 return ListTile(
                   title: Text(GlobalConfigs.allAdvertisements[idx].title),
                   subtitle: Text(GlobalConfigs.allAdvertisements[idx].description),
@@ -97,7 +97,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 );
               },
               itemCount: GlobalConfigs.allAdvertisements
-                  .where((element) => element.userId == GlobalConfigs.id)
                   .length,
             ),
           )

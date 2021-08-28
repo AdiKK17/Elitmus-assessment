@@ -81,6 +81,7 @@ test:
 #
 production:
   <<: *default
-  database: elitmus_production
-  username: elitmus
-  password: <%= ENV['ELITMUS_DATABASE_PASSWORD'] %>
+  # database: elitmus_production
+  # username: elitmus
+  # password: <%= ENV['ELITMUS_DATABASE_PASSWORD'] %>
+  database: <%= ENV['DATABASE_URL'] %> 
