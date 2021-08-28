@@ -9,15 +9,16 @@ import 'advertisement_model.dart';
 
 class NewAdvertisementPage extends StatefulWidget {
   final bool editMode;
-  final int index;
+  final String id;
 
-  NewAdvertisementPage({this.editMode = false, this.index = 0});
+  NewAdvertisementPage({this.editMode = false, this.id = ""});
 
   @override
   _NewAdvertisementPageState createState() => _NewAdvertisementPageState();
 }
 
 class _NewAdvertisementPageState extends State<NewAdvertisementPage> {
+  int index = 0;
   bool _isSwitched = false;
   bool _isLoading = false;
   final TextEditingController _titleController = TextEditingController();
@@ -34,7 +35,7 @@ class _NewAdvertisementPageState extends State<NewAdvertisementPage> {
     try {
       if (widget.editMode) {
         final response = await Dio().put(
-          '${GlobalConfigs.baseURl}/advertisement/${GlobalConfigs.allAdvertisements[widget.index].id}',
+          '${GlobalConfigs.baseURl}/advertisement/${GlobalConfigs.allAdvertisements[index].id}',
           data: jsonEncode({
             'title': _titleController.text,
             'description': _descriptionController.text,
@@ -49,9 +50,9 @@ class _NewAdvertisementPageState extends State<NewAdvertisementPage> {
         );
         if (response.statusCode == 200) {
           final ad = Advertisement.fromJson(response.data);
-          GlobalConfigs.allAdvertisements[widget.index].publish = ad.publish;
-          GlobalConfigs.allAdvertisements[widget.index].title = ad.title;
-          GlobalConfigs.allAdvertisements[widget.index].description =
+          GlobalConfigs.allAdvertisements[index].publish = ad.publish;
+          GlobalConfigs.allAdvertisements[index].title = ad.title;
+          GlobalConfigs.allAdvertisements[index].description =
               ad.description;
         }
         Navigator.pop(context);
@@ -85,11 +86,13 @@ class _NewAdvertisementPageState extends State<NewAdvertisementPage> {
   void initState() {
     super.initState();
     if (widget.editMode) {
+      index = GlobalConfigs.allAdvertisements
+          .indexWhere((element) => element.id == widget.id);
       _titleController.text =
-          GlobalConfigs.allAdvertisements[widget.index].title;
+          GlobalConfigs.allAdvertisements[index].title;
       _descriptionController.text =
-          GlobalConfigs.allAdvertisements[widget.index].description;
-      _isSwitched = GlobalConfigs.allAdvertisements[widget.index].publish;
+          GlobalConfigs.allAdvertisements[index].description;
+      _isSwitched = GlobalConfigs.allAdvertisements[index].publish;
     }
   }
 
@@ -107,7 +110,7 @@ class _NewAdvertisementPageState extends State<NewAdvertisementPage> {
                         _isLoading = true;
                       });
                       final response = await Dio().delete(
-                        '${GlobalConfigs.baseURl}/advertisement/${GlobalConfigs.allAdvertisements[widget.index].id}',
+                        '${GlobalConfigs.baseURl}/advertisement/${GlobalConfigs.allAdvertisements[index].id}',
                         options: Options(
                           headers: {
                             "Authorization":
@@ -116,7 +119,7 @@ class _NewAdvertisementPageState extends State<NewAdvertisementPage> {
                         ),
                       );
                       if (response.statusCode == 200) {
-                        GlobalConfigs.allAdvertisements.removeAt(widget.index);
+                        GlobalConfigs.allAdvertisements.removeAt(index);
                       }
                     } catch(e){
                       print(e);
@@ -170,7 +173,7 @@ class _NewAdvertisementPageState extends State<NewAdvertisementPage> {
                 ),
                 ElevatedButton(
                   onPressed: _createAdvertisement,
-                  child: Text(widget.editMode ? "Edit" : "Create"),
+                  child: Text(widget.editMode ? "Save Changes" : "Create"),
                 )
               ],
             ),

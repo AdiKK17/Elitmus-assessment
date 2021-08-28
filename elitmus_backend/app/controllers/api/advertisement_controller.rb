@@ -1,6 +1,6 @@
 module Api
     class AdvertisementController < ApplicationController
-        before_action :authorized , only: [:getRelevantAds,:create,:update,:destroy]
+        before_action :authorized , only: [:getRelevantAds,:create,:update]
         
         #GET returns all advertisements
         def index
@@ -65,7 +65,8 @@ module Api
         #DELETE delete the advertisement
         def destroy
             advertisement = Advertisement.find_by(id: params[:id])
-
+            Comment.where(advertisement_id: advertisement.id).destroy_all
+            
             if advertisement.destroy
                 # render json: AdvertisementSerializer.new(advertisement).serialized_json
                 render json: advertisement

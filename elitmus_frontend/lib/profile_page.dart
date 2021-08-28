@@ -64,19 +64,20 @@ class _ProfilePageState extends State<ProfilePage> {
           Divider(),
           Expanded(
             child: ListView.builder(
-              itemBuilder: (ctx, i) {
-                int idx = GlobalConfigs.allAdvertisements
-                    .indexWhere((element) => element.userId == GlobalConfigs.id,i);
+              itemBuilder: (ctx, index) {
+                Advertisement advertisement = GlobalConfigs.allAdvertisements
+                    .where((element) => element.userId == GlobalConfigs.id)
+                    .elementAt(index);
                 return ListTile(
-                  title: Text(GlobalConfigs.allAdvertisements[idx].title),
-                  subtitle: Text(GlobalConfigs.allAdvertisements[idx].description),
+                  title: Text(advertisement.title),
+                  subtitle: Text(advertisement.description),
                   trailing: IconButton(
                     onPressed: () async {
                       await Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => NewAdvertisementPage(
                             editMode: true,
-                            index: idx,
+                            id: advertisement.id,
                           ),
                         ),
                       );
@@ -87,16 +88,16 @@ class _ProfilePageState extends State<ProfilePage> {
                   onTap: () => Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => AdvertisementPage(
-                        title: GlobalConfigs.allAdvertisements[idx].title,
-                        description: GlobalConfigs.allAdvertisements[idx].description,
-                        id: GlobalConfigs.allAdvertisements[idx].id,
-                        comments: GlobalConfigs.allAdvertisements[idx].comments,
+                        title: advertisement.title,
+                        description: advertisement.description,
+                        id: advertisement.id,
+                        comments: advertisement.comments,
                       ),
                     ),
                   ),
                 );
               },
-              itemCount: GlobalConfigs.allAdvertisements
+              itemCount: GlobalConfigs.allAdvertisements.where((element) => element.userId == GlobalConfigs.id)
                   .length,
             ),
           )
